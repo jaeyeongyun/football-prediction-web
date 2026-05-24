@@ -1,0 +1,1570 @@
+/* C:\Users\ericy\.gemini\antigravity\scratch\football-prediction-web\static\css\style.css */
+
+/* ----------------------------------------------------
+   1. Design System & Variables
+   ---------------------------------------------------- */
+:root {
+    --bg-dark: #070913;
+    --bg-card: rgba(18, 22, 41, 0.45);
+    --bg-glass-white: rgba(255, 255, 255, 0.03);
+    
+    --color-primary: #00ff66; /* Neon Green */
+    --color-secondary: #00f0ff; /* Neon Cyan */
+    --color-accent: #8b5cf6; /* Neon Purple */
+    --color-draw: #e2e8f0; /* Silver Gray */
+    
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-dark: #0f172a;
+    
+    --border-glass: rgba(255, 255, 255, 0.08);
+    --border-active-home: rgba(0, 255, 102, 0.4);
+    --border-active-away: rgba(0, 240, 255, 0.4);
+    
+    --font-outfit: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    
+    --shadow-neon-green: 0 0 20px rgba(0, 255, 102, 0.35);
+    --shadow-neon-cyan: 0 0 20px rgba(0, 240, 255, 0.35);
+    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+}
+
+/* ----------------------------------------------------
+   2. Reset & Core Layout
+   ---------------------------------------------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-inter);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+
+/* Dynamic blurred gradient bubbles in the background */
+.glass-bg-blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    overflow: hidden;
+    background: radial-gradient(circle at 10% 20%, rgba(13, 17, 38, 1) 0%, rgba(6, 8, 17, 1) 90%);
+}
+
+.glass-bg-blur::before,
+.glass-bg-blur::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+.glass-bg-blur::before {
+    width: 40vw;
+    height: 40vw;
+    background: var(--color-primary);
+    top: -10vw;
+    right: -10vw;
+    animation: floating-bubble 25s infinite alternate ease-in-out;
+}
+
+.glass-bg-blur::after {
+    width: 50vw;
+    height: 50vw;
+    background: var(--color-secondary);
+    bottom: -15vw;
+    left: -15vw;
+    animation: floating-bubble 30s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes floating-bubble {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(8%, 10%) scale(1.1); }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ----------------------------------------------------
+   3. Glassmorphism Reusable Elements
+   ---------------------------------------------------- */
+.glass-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 16px;
+    box-shadow: var(--shadow-glass);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.55);
+}
+
+/* ----------------------------------------------------
+   4. Header Navigation
+   ---------------------------------------------------- */
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(7, 9, 19, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+}
+
+.ball-icon {
+    font-size: 1.6rem;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
+}
+
+.logo-highlight {
+    color: var(--color-primary);
+    text-shadow: 0 0 8px rgba(0, 255, 102, 0.5);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+}
+
+.nav-link:hover, 
+.nav-link.active {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link.active {
+    border-bottom: 2px solid var(--color-primary);
+    border-radius: 8px 8px 0 0;
+}
+
+/* ----------------------------------------------------
+   5. Hero Section
+   ---------------------------------------------------- */
+.hero-section {
+    padding: 4.5rem 0 3rem 0;
+    text-align: center;
+}
+
+.hero-title {
+    font-family: var(--font-outfit);
+    font-size: 3.2rem;
+    font-weight: 900;
+    line-height: 1.25;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.5px;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 10px rgba(0, 255, 102, 0.15));
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 720px;
+    margin: 0 auto;
+    font-weight: 400;
+}
+
+/* ----------------------------------------------------
+   6. Dashboard Modules & Sections
+   ---------------------------------------------------- */
+.dashboard-section {
+    margin-bottom: 4rem;
+}
+
+.section-header {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-family: var(--font-outfit);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.2px;
+}
+
+.section-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* ----------------------------------------------------
+   7. Today's Matches Grid (Fixtures)
+   ---------------------------------------------------- */
+.fixtures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1.5rem;
+    min-height: 200px;
+    position: relative;
+}
+
+.fixture-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.fixture-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--color-primary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.fixture-card.featured::before {
+    opacity: 1;
+    background: linear-gradient(to bottom, var(--color-primary), var(--color-secondary));
+}
+
+.fixture-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 10px 24px -5px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.fixture-card:hover::before {
+    opacity: 1;
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+}
+
+.league-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: var(--font-outfit);
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.match-time-tag {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-secondary);
+    background: rgba(0, 240, 255, 0.08);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.match-teams-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.team-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    text-align: center;
+}
+
+.team-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+    border: 1.5px solid var(--border-glass);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 0.6rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.fixture-card:hover .team-avatar {
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.team-name {
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: -0.2px;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.team-stat-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+}
+
+.vs-badge {
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    padding: 0.4rem;
+    opacity: 0.6;
+}
+
+.card-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-glass);
+    padding-top: 1rem;
+    margin-top: auto;
+}
+
+.form-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.form-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.form-dot.w { background-color: var(--color-primary); }
+.form-dot.d { background-color: var(--color-draw); }
+.form-dot.l { background-color: #ef4444; }
+
+.btn-predict-link {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: transform 0.2s ease;
+}
+
+.fixture-card:hover .btn-predict-link {
+    transform: translateX(3px);
+}
+
+/* ----------------------------------------------------
+   8. Interactive Simulator Room
+   ---------------------------------------------------- */
+.simulator-workspace {
+    display: grid;
+    grid-template-columns: 1fr 120px 1fr;
+    gap: 1.5rem;
+    align-items: stretch;
+    margin-bottom: 2rem;
+}
+
+.sim-team-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+    backdrop-filter: blur(12px);
+    transition: border-color 0.3s ease;
+}
+
+.sim-team-panel.home-panel {
+    border-left: 3px solid var(--color-primary);
+}
+
+.sim-team-panel.home-panel:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.1);
+}
+
+.sim-team-panel.away-panel {
+    border-right: 3px solid var(--color-secondary);
+}
+
+.sim-team-panel.away-panel:focus-within {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+}
+
+.panel-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.badge {
+    align-self: flex-start;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: var(--font-outfit);
+}
+
+.badge-home {
+    background-color: rgba(0, 255, 102, 0.15);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 255, 102, 0.3);
+}
+
+.badge-away {
+    background-color: rgba(0, 240, 255, 0.15);
+    color: var(--color-secondary);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+}
+
+.team-name-input {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-glass);
+    border-radius: 8px;
+    color: var(--text-main);
+    font-family: var(--font-outfit);
+    font-size: 1.4rem;
+    font-weight: 800;
+    padding: 0.4rem 0.8rem;
+    width: 100%;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.team-name-input:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255,255,255,0.25);
+}
+
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.slider-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.slider-indicator {
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.neon-green { color: var(--color-primary); text-shadow: 0 0 5px rgba(0,255,102,0.3); }
+.neon-cyan { color: var(--color-secondary); text-shadow: 0 0 5px rgba(0,240,255,0.3); }
+
+/* Custom Sliders Styling */
+.custom-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    outline: none;
+}
+
+.custom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.home-panel .custom-slider::-webkit-slider-thumb {
+    background: var(--color-primary);
+    box-shadow: 0 0 8px var(--color-primary);
+}
+
+.away-panel .custom-slider::-webkit-slider-thumb {
+    background: var(--color-secondary);
+    box-shadow: 0 0 8px var(--color-secondary);
+}
+
+.custom-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Custom Checkbox */
+.custom-checkbox-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    user-select: none;
+}
+
+.custom-checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: rgba(255,255,255,0.05);
+    border: 1px solid var(--border-glass);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.custom-checkbox-container:hover input ~ .checkmark {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.custom-checkbox-container input:checked ~ .checkmark {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.custom-checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.custom-checkbox-container .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 4px;
+    height: 9px;
+    border: solid #000;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-info {
+    font-size: 0.85rem;
+}
+
+.neutral-text {
+    color: var(--text-muted);
+}
+
+/* Simulator Mid Divider */
+.sim-vs-divider {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.vs-glow-text {
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 2.2rem;
+    color: rgba(255, 255, 255, 0.15);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.btn-simulate {
+    position: relative;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: var(--text-dark);
+    border: none;
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.5rem;
+    line-height: 1.2;
+    box-shadow: 0 6px 20px rgba(0, 240, 255, 0.35);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-simulate:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(0, 240, 255, 0.55), 0 0 20px rgba(0, 255, 102, 0.3);
+}
+
+.btn-simulate:active {
+    transform: scale(0.95);
+}
+
+.btn-glow {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    z-index: -1;
+    opacity: 0.4;
+    filter: blur(10px);
+    animation: pulsing-glow 2s infinite;
+}
+
+@keyframes pulsing-glow {
+    0% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(1.1); opacity: 0.6; }
+    100% { transform: scale(1); opacity: 0.4; }
+}
+
+/* Simulator Results Panel */
+.sim-result-box {
+    margin-top: 1.5rem;
+    position: relative;
+    min-height: 180px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed var(--border-glass);
+    padding: 1.5rem;
+    overflow: hidden;
+}
+
+.sim-result-box.hidden {
+    display: none;
+}
+
+.sim-running-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(7, 9, 19, 0.95);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.sim-result-box.calculating .sim-running-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dice-rolling-animation {
+    text-align: center;
+}
+
+.dice {
+    font-size: 3rem;
+    animation: rolling-dice 1s infinite ease-in-out;
+    display: inline-block;
+    margin-bottom: 0.8rem;
+}
+
+@keyframes rolling-dice {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.pulse-text {
+    font-size: 0.95rem;
+    color: var(--color-secondary);
+    font-weight: 600;
+    animation: text-pulse 1.5s infinite;
+}
+
+@keyframes text-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+.sim-results-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 1.5rem;
+}
+
+.sim-prob-card h3, .sim-score-card h3 {
+    font-family: var(--font-outfit);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+}
+
+.prob-bar-container {
+    display: flex;
+    height: 38px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.prob-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    transition: width 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.home-color {
+    background: linear-gradient(to right, rgba(0, 255, 102, 0.8), rgba(0, 255, 102, 0.6));
+    border-right: 1px solid rgba(0,0,0,0.2);
+}
+
+.away-color {
+    background: linear-gradient(to right, rgba(0, 240, 255, 0.6), rgba(0, 240, 255, 0.8));
+    border-left: 1px solid rgba(0,0,0,0.2);
+}
+
+.draw-color {
+    background: rgba(148, 163, 184, 0.4);
+}
+
+.xg-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.03);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-glass);
+    font-size: 0.9rem;
+}
+
+.xg-badge-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.vs-text {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.top-scores-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.top-scores-list.list-vertical {
+    gap: 0.8rem;
+}
+
+.top-score-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-glass);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.top-score-item:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+}
+
+.score-badge {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--text-main);
+    background: rgba(255,255,255,0.05);
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+}
+
+.score-prob-val {
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    color: var(--color-primary);
+    font-size: 0.95rem;
+}
+
+.score-prob-val.cyan-color {
+    color: var(--color-secondary);
+}
+
+/* ----------------------------------------------------
+   9. League Tabs & Standings Table
+   ---------------------------------------------------- */
+.league-tabs {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.league-tab-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    color: var(--text-muted);
+    font-family: var(--font-inter);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(10px);
+}
+
+.league-tab-btn:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255,255,255,0.15);
+}
+
+.league-tab-btn.active {
+    color: #fff;
+    background: var(--color-primary);
+    color: var(--text-dark);
+    font-weight: 700;
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-neon-green);
+}
+
+.standings-container {
+    overflow-x: auto;
+}
+
+.standings-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.standings-table th, .standings-table td {
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.standings-table th {
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.standings-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.standings-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.standings-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.team-info-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.team-avatar-mini {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border-glass);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.team-title {
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.team-desc-small {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.1rem;
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.elo-cell {
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+.num-cell {
+    font-family: var(--font-outfit);
+    font-weight: 600;
+}
+
+/* ----------------------------------------------------
+   10. Theory Section
+   ---------------------------------------------------- */
+.theory-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.theory-card {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.card-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.theory-card h3 {
+    font-family: var(--font-outfit);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.theory-card p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+/* ----------------------------------------------------
+   11. Overlay Analysis Modal (High-Fidelity UI)
+   ---------------------------------------------------- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 6, 12, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-container {
+    width: 100%;
+    max-width: 840px;
+    max-height: 90vh;
+    background: #0d1021;
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    overflow-y: auto;
+    position: relative;
+}
+
+.animate-zoom-in {
+    animation: zoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes zoomIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.modal-close-x {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.modal-close-x:hover {
+    color: #fff;
+}
+
+.modal-header {
+    padding: 2rem 2rem 1rem 2rem;
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.modal-title {
+    font-family: var(--font-outfit);
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-top: 0.5rem;
+    color: #fff;
+}
+
+.modal-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Matchup Cards Header inside Modal */
+.modal-matchup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    padding: 1.5rem 2.5rem;
+}
+
+.modal-team-card {
+    flex: 1;
+}
+
+.modal-team-name {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.modal-keyplayer {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+}
+
+.modal-vs-box {
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: var(--color-primary);
+    text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+    padding: 0 2rem;
+}
+
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+/* Sub-titles */
+.subsection-title {
+    font-family: var(--font-outfit);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+}
+
+/* Visual Prob Strip Chart */
+.prob-visual-strip {
+    display: flex;
+    height: 46px;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 0.9rem;
+    font-weight: 700;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.strip-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    transition: width 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.home-seg {
+    background: linear-gradient(to right, rgba(0, 255, 102, 0.95), rgba(0, 255, 102, 0.7));
+}
+
+.away-seg {
+    background: linear-gradient(to right, rgba(0, 240, 255, 0.7), rgba(0, 240, 255, 0.95));
+}
+
+.draw-seg {
+    background: rgba(148, 163, 184, 0.3);
+}
+
+/* Stats Row: Over Under & BTTS */
+.modal-stats-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    padding: 1.2rem;
+}
+
+.stat-card h4 {
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 1.2rem;
+    color: var(--text-muted);
+}
+
+.ou-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ou-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+}
+
+.ou-lbl {
+    width: 110px;
+    color: var(--text-muted);
+}
+
+.ou-progress-bar {
+    flex: 1;
+    height: 10px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.ou-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.neon-purple {
+    background: linear-gradient(to right, var(--color-accent), #a78bfa);
+}
+
+.ou-val {
+    width: 40px;
+    text-align: right;
+    font-weight: 700;
+}
+
+/* BTTS Circular SVG chart */
+.btts-circle-display {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.circle-radial {
+    position: relative;
+    width: 76px;
+    height: 76px;
+}
+
+.circular-chart {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: rgba(255,255,255,0.04);
+    stroke-width: 3.2;
+}
+
+.circle {
+    fill: none;
+    stroke-width: 3.2;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.8s ease;
+}
+
+.neon-green-chart .circle {
+    stroke: var(--color-primary);
+}
+
+.btts-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.btts-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* Bottom Insights: score distribution & text commentary */
+.modal-insights-row {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 1.5rem;
+}
+
+.box-title {
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+}
+
+.score-predictions-box, .commentary-box {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    padding: 1.2rem;
+}
+
+.insight-text {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.insight-text strong {
+    color: #fff;
+}
+
+.modal-footer {
+    padding: 1rem 2rem 2rem 2rem;
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid var(--border-glass);
+}
+
+.btn-close {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--border-glass);
+    color: var(--text-main);
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-close:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.25);
+}
+
+/* ----------------------------------------------------
+   12. Footer
+   ---------------------------------------------------- */
+.app-footer-bar {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    border-top: 1px solid var(--border-glass);
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.app-footer-bar p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.footer-small {
+    font-size: 0.75rem !important;
+    opacity: 0.7;
+}
+
+/* ----------------------------------------------------
+   13. Spinner Loading & Utilities
+   ---------------------------------------------------- */
+.loading-spinner-wrapper {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem 0;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255,255,255,0.05);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ----------------------------------------------------
+   14. Mobile Responsive Adaptive Design
+   ---------------------------------------------------- */
+@media (max-width: 900px) {
+    .simulator-workspace {
+        grid-template-columns: 1fr;
+    }
+    
+    .sim-vs-divider {
+        flex-direction: row;
+        padding: 1rem 0;
+    }
+    
+    .btn-simulate {
+        width: 140px;
+        height: 50px;
+        border-radius: 25px;
+    }
+    
+    .btn-glow {
+        border-radius: 25px;
+    }
+    
+    .sim-results-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-insights-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .nav-links {
+        display: none; /* 모바일 단순화를 위해 숨김 처리 */
+    }
+    
+    .modal-matchup-header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .modal-team-card {
+        text-align: center !important;
+    }
+}
+
+/* ----------------------------------------------------
+   15. Realtime ESPN Scoring & Logo UI Additions
+   ---------------------------------------------------- */
+.logo-wrapper {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.6rem;
+    position: relative;
+}
+
+.team-logo-img {
+    max-width: 58px;
+    max-height: 58px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    transition: transform 0.3s ease;
+}
+
+.fixture-card:hover .team-logo-img {
+    transform: scale(1.1) rotate(2deg);
+}
+
+.score-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(0, 255, 102, 0.08);
+    border: 1px solid rgba(0, 255, 102, 0.2);
+    padding: 0.4rem 0.8rem !important;
+    border-radius: 8px;
+    font-size: 1.3rem !important;
+    font-weight: 800 !important;
+    color: var(--color-primary) !important;
+    text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+    opacity: 1 !important;
+}
+
+.score-num {
+    font-family: var(--font-outfit);
+}
+
+.score-dash {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.live-border {
+    border-color: rgba(239, 68, 68, 0.35) !important;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.1) !important;
+}
+
+.live-border::before {
+    opacity: 1 !important;
+    background: linear-gradient(to bottom, #ef4444, #f97316) !important;
+}
+
+.tag-live-pulsing {
+    color: #ef4444 !important;
+    background: rgba(239, 68, 68, 0.1) !important;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    font-weight: 700 !important;
+    animation: live-indicator-blink 1.5s infinite alternate;
+}
+
+@keyframes live-indicator-blink {
+    0% { opacity: 0.6; box-shadow: 0 0 5px rgba(239,68,68,0.1); }
+    100% { opacity: 1; box-shadow: 0 0 12px rgba(239,68,68,0.3); }
+}
+
+.tag-finished {
+    color: var(--text-muted) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--border-glass) !important;
+    font-weight: 600 !important;
+}

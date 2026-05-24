@@ -1,0 +1,26 @@
+# C:\Users\ericy\.gemini\antigravity\scratch\football-prediction-web\.gitignore
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# OS/System Files
+.DS_Store
+Thumbs.db
+
+# Flask/Development logs
+instance/
+.webassets-cache
+.env
+.flaskenv
+*.log
