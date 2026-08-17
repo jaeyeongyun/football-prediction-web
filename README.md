@@ -1,78 +1,67 @@
-# ⚽ ANTIGRAVITY Football Prediction Platform (FCP)
+# Football Match Prediction & Simulation
 
-> **인공지능 & 통계학 기반 축구 경기 예측 대시보드 및 실시간 시뮬레이션 웹 플랫폼**
-> 
-> 외부 유료 스포츠 API 종속 없이 포아송 분포(Poisson Distribution) 모델과 10,000회 몬테카를로 시뮬레이션(Monte Carlo Simulation) 기법을 탑재하여 100% 영구 무료 분석 서비스를 제공합니다.
+A Python web platform that predicts football match outcomes using a Poisson distribution model and Monte Carlo simulation.
 
----
+## Features
 
-## ✨ 핵심 기능 (Features)
+**Match prediction**
+Combines each club's attack/defence rating, Elo rating, and recent form into a Poisson distribution model, producing a full scoreline probability matrix. From that matrix the app derives win/draw/loss probabilities, Over/Under 2.5 goals, and both-teams-to-score (BTTS) probabilities.
 
-1. **🏆 실시간 통계 모델 기반 경기 예측**
-   - 유럽 4대 리그(프리미어리그, 라리가, 세리에 A, 분데스리가) 구단들의 실시간 스탯(공격 지수, 수비 견고성) 및 최근 5경기 폼(Form), 최신 Elo 레이팅 연동.
-   - 포아송 분포 모델을 이용한 경기 스코어 경우의 수 계산 및 승/무/패 예측 확률 출력.
-   - Over/Under 2.5골 및 양 팀 득점 여부(BTTS) 정밀 시각화.
+**Interactive simulator**
+Lets users set attack strength, defence strength, and recent form for two teams via sliders, then runs a 10,000-trial Monte Carlo simulation (using a Knuth-style Poisson sampler) to produce the most likely scorelines and win probabilities.
 
-2. **⚙️ 인터랙티브 경기 시뮬레이터 (Monte Carlo Simulator)**
-   - 두 팀의 공격력, 수비력, 최근 기세를 직접 슬라이더로 조절하여 가상 전력 설정 가능.
-   - 10,000회 경기 몬테카를로 난수 시뮬레이션을 가동하여 예상 스코어 Top 3 및 축적 승률 즉석 도출.
+**Live fixtures**
+Pulls live and upcoming fixtures for the Premier League, La Liga, Serie A, and Bundesliga from ESPN's public scoreboard API, with a 60-second local cache to avoid hammering the endpoint.
 
-3. **📊 리그별 파워 랭킹 & 상세 전술 해설**
-   - 구단별 세부 지표와 최근 전적, 그리고 실제 전술 동향(예: 하이 프레스, 점유율 축구 등)을 제공하는 전력 판독 테이블.
+**Power rankings**
+A per-club table combining the underlying ratings, recent form, and a short note on playing style.
 
-4. **📖 축구 통계학 이론 교육 룸**
-   - 포아송 분포, Elo 등급 조정, 몬테카를로 분석 등 본 플랫폼에 적용된 현대 축구 분석 통계 모델 이론 소개.
+## Data sources
 
----
+- **Live scores and fixtures**: [ESPN's public site API](https://site.api.espn.com/apis/site/v2/sports/soccer/) (no API key required).
+- **Team ratings** (attack, defence, Elo): manually curated by me for the 2025–26 season for ~20 top clubs across the four leagues. This is a static snapshot, not pulled from a stats provider, and it isn't updated automatically as form changes.
 
-## 🛠️ 기술 스택 (Tech Stack)
+## Known limitations
 
-- **Backend**: Python 3.x, Flask (RESTful API Web Server)
-- **Frontend**: HTML5, Vanilla CSS3 (Neon Dark Theme & Glassmorphism Design System), Modern Vanilla JS
-- **Statistical Core**: Poisson Probability Distribution Matrix, Monte Carlo Simulated Algorithms (Knuth Method)
+- Only the clubs listed in `database.py` have real ratings; any other team falls back to a generic default (Elo 1650).
+- Team ratings are a manual snapshot and need to be updated by hand to stay current.
+- The ESPN endpoint is a public, unofficial API and could change or rate-limit without notice.
 
----
+## Tech stack
 
-## 🚀 로컬 실행 방법 (Quick Start)
+- **Backend**: Python 3, Flask (REST API)
+- **Frontend**: HTML5, vanilla CSS3, vanilla JavaScript
+- **Statistical core**: Poisson probability distribution, Monte Carlo simulation
 
-### 1. 프로젝트 복제 및 이동
+## Getting started
+
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/football-prediction-web.git
+git clone https://github.com/jaeyeongyun/football-prediction-web.git
 cd football-prediction-web
-```
-
-### 2. 필요한 라이브러리 설치
-```bash
 pip install Flask
-```
-
-### 3. 웹 서버 실행
-```bash
 python app.py
 ```
-> 구동 완료 후 브라우저에서 **`http://localhost:5000`**으로 접속합니다.
 
----
+Then open `http://localhost:5000` in a browser.
 
-## 📂 프로젝트 구조 (Directory Structure)
+## Project structure
 
 ```text
 football-prediction-web/
-├── app.py                     # Flask 웹 애플리케이션 엔트리포인트 및 API
-├── prediction_engine.py       # 포아송 분포 및 몬테카를로 연산 엔진
-├── database.py                # 구단 정보 및 일정 데이터베이스
+├── app.py                 # Flask app entry point and API routes
+├── prediction_engine.py   # Poisson distribution and Monte Carlo simulation logic
+├── database.py             # Manually curated club ratings and sample fixtures
+├── live_updater.py         # ESPN API integration and local caching
 ├── templates/
-│   └── index.html             # 메인 SPA 템플릿
+│   └── index.html         # Main page template
 ├── static/
 │   ├── css/
-│   │   └── style.css          # Glassmorphic 스타일시트
+│   │   └── style.css
 │   └── js/
-│       └── app.js             # API 비동기 연동 및 UI 제어
-└── .gitignore                 # 깃 허브 제외 목록 파일
+│       └── app.js         # API calls and UI logic
+└── .gitignore
 ```
 
----
+## License
 
-## 📝 라이선스 (License)
-
-이 프로젝트는 오픈소스이며 자유롭게 수정 및 배포가 가능합니다. ⚽
+Open source. Free to use, modify, and distribute.
