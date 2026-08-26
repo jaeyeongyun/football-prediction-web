@@ -1,15 +1,14 @@
-// C:\Users\ericy\.gemini\antigravity\scratch\football-prediction-web\static\js\app.js
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 글로벌 데이터 캐시
+    // cached league data
     let cachedLeagues = null;
 
-    // DOM 요소 캐시
+    // DOM references
     const fixturesGrid = document.getElementById("fixtures-grid");
     const standingsBody = document.getElementById("standings-body");
     const leagueTabBtns = document.querySelectorAll(".league-tab-btn");
     
-    // 시뮬레이터 요소
+    // simulator controls
     const btnSimulate = document.getElementById("btn-run-simulation");
     const simResultBox = document.getElementById("sim-result-box");
     const homeAttSlider = document.getElementById("sim-home-attack");
@@ -21,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const awayDefSlider = document.getElementById("sim-away-defense");
     const awayFormSlider = document.getElementById("sim-away-form");
     
-    // 시뮬레이터 수치 인디케이터
+    // slider value labels
     const homeAttVal = document.getElementById("home-att-val");
     const homeDefVal = document.getElementById("home-def-val");
     const homeFormVal = document.getElementById("home-form-val");
@@ -29,15 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const awayDefVal = document.getElementById("away-def-val");
     const awayFormVal = document.getElementById("away-form-val");
 
-    // 모달 요소
+    // modal
     const predictModal = document.getElementById("predict-modal");
     const modalCloseBtn = document.getElementById("modal-close-btn");
     const modalCloseFooterBtn = document.getElementById("modal-close-footer-btn");
 
     /* ----------------------------------------------------
-       1. 초기 구동 및 슬라이더 연동
+       1. Initialisation and slider bindings
        ---------------------------------------------------- */
-    // 슬라이더 값 변경 시 실시간 라벨 업데이트 로직
+    // keep the numeric label in sync with the slider
     const setupSlider = (slider, indicator) => {
         slider.addEventListener("input", (e) => {
             indicator.textContent = e.target.value;
@@ -50,21 +49,21 @@ document.addEventListener("DOMContentLoaded", () => {
     setupSlider(awayDefSlider, awayDefVal);
     setupSlider(awayFormSlider, awayFormVal);
 
-    // 초기 데이터 로딩 호출
+    // initial data load
     loadFixtures();
     loadLeaguesAndStandings();
 
     /* ----------------------------------------------------
-       2. API 통신 및 데이터 렌더링
+       2. API calls and rendering
        ---------------------------------------------------- */
-    // 추천 예정 매치업 목록 가져오기
+    // fetch live and upcoming fixtures
     function loadFixtures() {
         fetch("/api/fixtures")
             .then(res => res.json())
             .then(fixtures => {
                 fixturesGrid.innerHTML = "";
                 if (fixtures.length === 0) {
-                    fixturesGrid.innerHTML = "<p class='neutral-text'>현재 진행 중이거나 대기 중인 리그 매치업이 없습니다.</p>";
+                    fixturesGrid.innerHTML = "<p class='neutral-text'>No matches are live or scheduled right now.</p>";
                     return;
                 }
                 
@@ -72,16 +71,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     const card = document.createElement("div");
                     card.className = `fixture-card ${fix.featured ? 'featured' : ''} ${fix.state === 'in' ? 'live-border' : ''}`;
                     
-                    // 홈/원정 로고 렌더링 (ESPN URL 또는 이니셜 텍스트Fallback)
+                    // club badge from ESPN, falling back to an initial
                     const homeLogoHtml = fix.home.logo 
-                        ? `<img src="${fix.home.logo}" class="team-logo-img" alt="${fix.home.name_kr}">` 
-                        : `<div class="team-avatar">${fix.home.name_kr[0]}</div>`;
+                        ? `<img src="${fix.home.logo}" class="team-logo-img" alt="${fix.home.name}">` 
+                        : `<div class="team-avatar">${fix.home.name[0]}</div>`;
                         
                     const awayLogoHtml = fix.away.logo 
-                        ? `<img src="${fix.away.logo}" class="team-logo-img" alt="${fix.away.name_kr}">` 
-                        : `<div class="team-avatar">${fix.away.name_kr[0]}</div>`;
+                        ? `<img src="${fix.away.logo}" class="team-logo-img" alt="${fix.away.name}">` 
+                        : `<div class="team-avatar">${fix.away.name[0]}</div>`;
                     
-                    // 실시간 스코어보드 또는 VS 상태 뱃지
+                    // score display for live and finished matches
                     let vsHtml = `<div class="vs-badge">VS</div>`;
                     if (fix.state === 'in' || fix.state === 'post') {
                         const pulseClass = fix.state === 'in' ? 'pulse-score' : '';
@@ -94,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         `;
                     }
 
-                    // 매치 상태별 시간 태그 스타일링
+                    // status tag styling
                     const tagClass = fix.state === 'in' ? 'tag-live-pulsing' : (fix.state === 'post' ? 'tag-finished' : '');
 
                     card.innerHTML = `
@@ -105,27 +104,27 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="match-teams-row">
                             <div class="team-block">
                                 <div class="logo-wrapper">${homeLogoHtml}</div>
-                                <div class="team-name">${fix.home.name_kr}</div>
+                                <div class="team-name">${fix.home.name}</div>
                                 <div class="team-stat-sub">Elo: ${fix.home.elo}</div>
                             </div>
                             ${vsHtml}
                             <div class="team-block">
                                 <div class="logo-wrapper">${awayLogoHtml}</div>
-                                <div class="team-name">${fix.away.name_kr}</div>
+                                <div class="team-name">${fix.away.name}</div>
                                 <div class="team-stat-sub">Elo: ${fix.away.elo}</div>
                             </div>
                         </div>
                         <div class="card-action">
                             <div class="form-dots">
-                                ${fix.home.form.slice(-3).map(f => `<span class="form-dot ${f.toLowerCase()}" title="홈팀 최근 폼: ${f}"></span>`).join("")}
+                                ${fix.home.form.slice(-3).map(f => `<span class="form-dot ${f.toLowerCase()}" title="Home form: ${f}"></span>`).join("")}
                                 <span style="font-size:0.7rem; color:var(--text-muted); padding:0 3px;">vs</span>
-                                ${fix.away.form.slice(-3).map(f => `<span class="form-dot ${f.toLowerCase()}" title="원정팀 최근 폼: ${f}"></span>`).join("")}
+                                ${fix.away.form.slice(-3).map(f => `<span class="form-dot ${f.toLowerCase()}" title="Away form: ${f}"></span>`).join("")}
                             </div>
-                            <a class="btn-predict-link">정밀 분석 & 예측 &rarr;</a>
+                            <a class="btn-predict-link">Full analysis &rarr;</a>
                         </div>
                     `;
                     
-                    // 카드 클릭 시 모달 오픈 및 예측 계산 요청
+                    // open the detail modal on click
                     card.addEventListener("click", () => {
                         openPredictionModal(fix.league_key, fix.home.id, fix.away.id);
                     });
@@ -134,26 +133,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             })
             .catch(err => {
-                console.error("Fixture 로딩 실패:", err);
-                fixturesGrid.innerHTML = "<p class='neutral-text'>⚠️ 예정된 실시간 경기 일정을 가져오는데 실패했습니다.</p>";
+                console.error("Failed to load fixtures:", err);
+                fixturesGrid.innerHTML = "<p class='neutral-text'>⚠️ Could not load fixtures.</p>";
             });
     }
 
-    // 리그 테이블 정보 초기화 및 탭 클릭 바인딩
+    // load league data and bind tab clicks
     function loadLeaguesAndStandings() {
         fetch("/api/leagues")
             .then(res => res.json())
             .then(data => {
                 cachedLeagues = data;
-                // 디폴트로 첫 번째 활성화된 탭(EPL) 렌더링
+                // render the default tab
                 renderStandings("epl");
             })
             .catch(err => {
-                console.error("League 로딩 실패:", err);
-                standingsBody.innerHTML = "<tr><td colspan='5' class='neutral-text'>⚠️ 리그 전력 정보를 가져오는데 실패했습니다.</td></tr>";
+                console.error("Failed to load leagues:", err);
+                standingsBody.innerHTML = "<tr><td colspan='5' class='neutral-text'>⚠️ Could not load team ratings.</td></tr>";
             });
 
-        // 탭 버튼 클릭 이벤트 바인딩
+        // league tab handlers
         leagueTabBtns.forEach(btn => {
             btn.addEventListener("click", () => {
                 leagueTabBtns.forEach(b => b.classList.remove("active"));
@@ -164,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 파워 랭킹 테이블 렌더링
+    // render the ratings table
     function renderStandings(leagueKey) {
         if (!cachedLeagues || !cachedLeagues[leagueKey]) return;
         
@@ -172,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const teams = league.teams;
         standingsBody.innerHTML = "";
         
-        // Elo 스코어 역순(강한 순)으로 구단 정렬
+        // sort clubs by Elo, highest first
         const sortedTeams = Object.keys(teams).map(key => ({
             id: key,
             ...teams[key]
@@ -183,9 +182,9 @@ document.addEventListener("DOMContentLoaded", () => {
             tr.innerHTML = `
                 <td>
                     <div class="team-info-cell">
-                        <div class="team-avatar-mini">${team.name_kr[0]}</div>
+                        <div class="team-avatar-mini">${team.name[0]}</div>
                         <div>
-                            <div class="team-title">${team.name_kr} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:400;">(${team.name})</span></div>
+                            <div class="team-title">${team.name}</div>
                             <div class="team-desc-small" title="${team.description}">${team.description}</div>
                         </div>
                     </div>
@@ -204,11 +203,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ----------------------------------------------------
-       3. 실시간 경기 시뮬레이터 (몬테카를로)
+       3. Monte Carlo simulator
        ---------------------------------------------------- */
     btnSimulate.addEventListener("click", () => {
-        const homeName = document.getElementById("sim-home-name").value.trim() || "FC 홈팀";
-        const awayName = document.getElementById("sim-away-name").value.trim() || "FC 원정팀";
+        const homeName = document.getElementById("sim-home-name").value.trim() || "Home team";
+        const awayName = document.getElementById("sim-away-name").value.trim() || "Away team";
         
         const payload = {
             home: {
@@ -224,14 +223,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
 
-        // 시뮬레이터 UI 활성화 및 로딩 연출
+        // show the result panel in a loading state
         simResultBox.classList.remove("hidden");
         simResultBox.classList.add("calculating");
         
-        // 스크롤 포커스 이동
+        // bring the results into view
         simResultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-        // 몬테카를로 연산의 웅장함을 위해 800ms 지연 연출
+        // brief delay so the loading state is visible
         setTimeout(() => {
             fetch("/api/simulate", {
                 method: "POST",
@@ -244,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(result => {
                 simResultBox.classList.remove("calculating");
                 
-                // 1. 게이지 채우기
+                // outcome bars
                 const hBar = document.getElementById("sim-bar-home");
                 const dBar = document.getElementById("sim-bar-draw");
                 const aBar = document.getElementById("sim-bar-away");
@@ -253,15 +252,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 dBar.style.width = `${result.draw_p}%`;
                 aBar.style.width = `${result.away_win_p}%`;
                 
-                hBar.innerHTML = `홈 승(${homeName}) <span id="sim-val-home">${result.home_win_p}%</span>`;
-                dBar.innerHTML = `무승부 <span id="sim-val-draw">${result.draw_p}%</span>`;
-                aBar.innerHTML = `원정 승(${awayName}) <span id="sim-val-away">${result.away_win_p}%</span>`;
+                hBar.innerHTML = `Home &mdash; ${homeName} <span id="sim-val-home">${result.home_win_p}%</span>`;
+                dBar.innerHTML = `Draw <span id="sim-val-draw">${result.draw_p}%</span>`;
+                aBar.innerHTML = `Away &mdash; ${awayName} <span id="sim-val-away">${result.away_win_p}%</span>`;
                 
-                // 2. xG 스코어 대조
+                // expected goals
                 document.getElementById("sim-xg-home").textContent = result.home_xg;
                 document.getElementById("sim-xg-away").textContent = result.away_xg;
                 
-                // 3. 탑 3 스코어 렌더링
+                // most likely scorelines
                 const scoresList = document.getElementById("sim-scores-list");
                 scoresList.innerHTML = "";
                 
@@ -270,49 +269,49 @@ document.addEventListener("DOMContentLoaded", () => {
                     li.className = "top-score-item";
                     li.innerHTML = `
                         <div>
-                            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700; margin-right:8px;">${idx + 1}위</span>
+                            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700; margin-right:8px;">#${idx + 1}</span>
                             <span class="score-badge">${item.score}</span>
                         </div>
-                        <span class="score-prob-val ${idx > 0 ? 'cyan-color' : ''}">${item.probability}% 확률</span>
+                        <span class="score-prob-val ${idx > 0 ? 'cyan-color' : ''}">${item.probability}%</span>
                     `;
                     scoresList.appendChild(li);
                 });
             })
             .catch(err => {
                 simResultBox.classList.remove("calculating");
-                console.error("시뮬레이션 연산 실패:", err);
-                alert("시뮬레이션 가동 중 서버 오류가 발생했습니다.");
+                console.error("Simulation request failed:", err);
+                alert("The simulation could not be completed. Please try again.");
             });
         }, 800);
     });
 
     /* ----------------------------------------------------
-       4. 예측 상세 리포트 모달 제어
+       4. Match detail modal
        ---------------------------------------------------- */
     function openPredictionModal(leagueKey, homeId, awayId) {
-        // 모달 열기 및 초기 대기 UI 처리
+        // open the modal in a loading state
         predictModal.classList.remove("hidden");
-        document.body.style.overflow = "hidden"; // 배경 스크롤 방지
+        document.body.style.overflow = "hidden"; // lock background scroll
         
-        // 모달 데이터 필드 초기 클리어
-        document.getElementById("modal-home-name").textContent = "분석 중...";
-        document.getElementById("modal-away-name").textContent = "분석 중...";
+        // clear previous values
+        document.getElementById("modal-home-name").textContent = "Analysing...";
+        document.getElementById("modal-away-name").textContent = "Analysing...";
         document.getElementById("modal-home-player").textContent = "";
         document.getElementById("modal-away-player").textContent = "";
         document.getElementById("modal-insight-text").innerHTML = "<div class='spinner' style='width:24px; height:24px; margin:20px auto;'></div>";
         
-        // API 요청
+        // request the prediction
         fetch(`/api/predict?league=${leagueKey}&home=${homeId}&away=${awayId}`)
             .then(res => res.json())
             .then(data => {
-                // 팀 기본 정보 바인딩
+                // team details
                 document.getElementById("modal-home-name").textContent = data.home_team;
                 document.getElementById("modal-away-name").textContent = data.away_team;
                 
-                document.getElementById("modal-home-player").innerHTML = `에이스: <strong>${data.home_details.key_player}</strong>`;
-                document.getElementById("modal-away-player").innerHTML = `에이스: <strong>${data.away_details.key_player}</strong>`;
+                document.getElementById("modal-home-player").innerHTML = `Key player: <strong>${data.home_details.key_player}</strong>`;
+                document.getElementById("modal-away-player").innerHTML = `Key player: <strong>${data.away_details.key_player}</strong>`;
                 
-                // 기대 승무패 게이지 바 렌더링
+                // outcome gauge
                 const gHome = document.getElementById("modal-gauge-home");
                 const gDraw = document.getElementById("modal-gauge-draw");
                 const gAway = document.getElementById("modal-gauge-away");
@@ -325,19 +324,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("modal-lbl-draw").textContent = `${data.draw_p}%`;
                 document.getElementById("modal-lbl-away").textContent = `${data.away_win_p}%`;
                 
-                // Over / Under 2.5골 진행바
+                // over/under 2.5 goals
                 document.getElementById("modal-bar-over").style.width = `${data.over_2_5_p}%`;
                 document.getElementById("modal-bar-under").style.width = `${data.under_2_5_p}%`;
                 document.getElementById("modal-val-over").textContent = `${data.over_2_5_p}%`;
                 document.getElementById("modal-val-under").textContent = `${data.under_2_5_p}%`;
                 
-                // BTTS (양팀 득점 확률) 서클 SVG 렌더링
+                // both teams to score
                 const bttsVal = data.btts_p;
                 document.getElementById("modal-val-btts").textContent = `${bttsVal}%`;
-                // SVG stroke-dasharray 값 갱신 (반지름 기반 둘레가 정확히 100이므로 100 기준 맵핑 가능)
+                // the circle circumference is 100, so the percentage maps directly
                 document.getElementById("modal-btts-circle-fill").setAttribute("stroke-dasharray", `${bttsVal}, 100`);
                 
-                // 탑 3 스코어 보드
+                // most likely scorelines
                 const scoresList = document.getElementById("modal-scores-list");
                 scoresList.innerHTML = "";
                 data.top_scores.forEach((item, idx) => {
@@ -345,32 +344,32 @@ document.addEventListener("DOMContentLoaded", () => {
                     li.className = "top-score-item";
                     li.innerHTML = `
                         <div>
-                            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700; margin-right:8px;">${idx+1}위</span>
+                            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700; margin-right:8px;">#${idx+1}</span>
                             <span class="score-badge">${item.score}</span>
                         </div>
-                        <span class="score-prob-val ${idx > 0 ? 'cyan-color' : ''}">${item.probability}% 확률</span>
+                        <span class="score-prob-val ${idx > 0 ? 'cyan-color' : ''}">${item.probability}%</span>
                     `;
                     scoresList.appendChild(li);
                 });
                 
-                // AI 통계 코멘터리 텍스트 삽입
+                // model commentary
                 document.getElementById("modal-insight-text").innerHTML = data.insight;
             })
             .catch(err => {
-                console.error("정밀 분석 로드 실패:", err);
-                document.getElementById("modal-insight-text").innerHTML = "<p class='neutral-text'>⚠️ 통계 연산 로딩에 실패했습니다.</p>";
+                console.error("Prediction request failed:", err);
+                document.getElementById("modal-insight-text").innerHTML = "<p class='neutral-text'>⚠️ Could not load the analysis.</p>";
             });
     }
 
-    // 모달 닫기
+    // close the modal
     const closeModal = () => {
         predictModal.classList.add("hidden");
-        document.body.style.overflow = ""; // 스크롤 원복
+        document.body.style.overflow = ""; // restore scroll
     };
     modalCloseBtn.addEventListener("click", closeModal);
     modalCloseFooterBtn.addEventListener("click", closeModal);
     
-    // 모달 바깥 어두운 배경 영역 클릭 시 닫기 구현
+    // close when the backdrop is clicked
     predictModal.addEventListener("click", (e) => {
         if (e.target === predictModal) {
             closeModal();

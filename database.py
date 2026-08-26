@@ -1,4 +1,3 @@
-# C:\Users\ericy\.gemini\antigravity\scratch\football-prediction-web\database.py
 
 # 리그별 주요 축구 구단 데이터베이스 (2025-2026 시즌 반영)
 # attack: 평균 경기당 득점 계수 (기본값 근처, 높을수록 공격력 강함)
@@ -20,7 +19,7 @@ LEAGUE_DATA = {
                 "elo": 1950,
                 "form": ["W", "W", "D", "W", "W"],
                 "key_player": "엘링 홀란드 (Erling Haaland)",
-                "description": "압도적인 점유율 축구와 홀란드의 가공할 피니시 능력이 조화를 이룹니다."
+                "description": "Sustained possession play paired with Haaland's finishing in the box."
             },
             "arsenal": {
                 "name": "Arsenal",
@@ -30,7 +29,7 @@ LEAGUE_DATA = {
                 "elo": 1910,
                 "form": ["W", "D", "W", "W", "W"],
                 "key_player": "부카요 사카 (Bukayo Saka)",
-                "description": "최고 수준의 세트피스 전술과 짜임새 있는 조직력 및 단단한 수비벽을 가졌습니다."
+                "description": "Elite set-piece routines behind a well-drilled, compact defensive structure."
             },
             "liverpool": {
                 "name": "Liverpool",
@@ -40,7 +39,7 @@ LEAGUE_DATA = {
                 "elo": 1900,
                 "form": ["W", "W", "L", "W", "W"],
                 "key_player": "모하메드 살라 (Mohamed Salah)",
-                "description": "빠른 템포의 전환 축구와 측면 역습 능력이 매우 위협적입니다."
+                "description": "Quick transitions and dangerous counter-attacking play down the flanks."
             },
             "chelsea": {
                 "name": "Chelsea",
@@ -50,7 +49,7 @@ LEAGUE_DATA = {
                 "elo": 1780,
                 "form": ["W", "D", "L", "W", "D"],
                 "key_player": "콜 파머 (Cole Palmer)",
-                "description": "콜 파머를 기점으로 한 창의적인 공격이 돋보이나 수비 불안 요소가 상존합니다."
+                "description": "Creative attacking play built around Palmer, offset by defensive lapses."
             },
             "manunited": {
                 "name": "Manchester United",
@@ -60,7 +59,7 @@ LEAGUE_DATA = {
                 "elo": 1740,
                 "form": ["L", "W", "D", "L", "W"],
                 "key_player": "브루노 페르난데스 (Bruno Fernandes)",
-                "description": "전술적 유연성과 개별 자원의 퀄리티는 우수하나 기복이 심한 편입니다."
+                "description": "Tactically flexible with strong individuals, but inconsistent week to week."
             },
             "tottenham": {
                 "name": "Tottenham Hotspur",
@@ -70,7 +69,7 @@ LEAGUE_DATA = {
                 "elo": 1760,
                 "form": ["W", "L", "W", "L", "W"],
                 "key_player": "손흥민 (Heung-min Son)",
-                "description": "공격적인 라인 운영과 빠른 속도의 전환을 선호하나 배후 공간 노출 위험이 큽니다."
+                "description": "A high defensive line and fast transitions, at the cost of space in behind."
             },
             "astonvilla": {
                 "name": "Aston Villa",
@@ -80,7 +79,7 @@ LEAGUE_DATA = {
                 "elo": 1770,
                 "form": ["D", "W", "W", "L", "D"],
                 "key_player": "올리 왓킨스 (Ollie Watkins)",
-                "description": "조직적인 오프사이드 트랩 활용과 날카로운 역습을 구사하는 까다로운 팀입니다."
+                "description": "A disciplined offside trap and sharp counter-attacks make them awkward to break down."
             }
         }
     },
@@ -97,7 +96,7 @@ LEAGUE_DATA = {
                 "elo": 1940,
                 "form": ["W", "W", "W", "D", "W"],
                 "key_player": "킬리안 음바페 (Kylian Mbappe)",
-                "description": "월드클래스 선수들의 개인 기량과 챔피언스리그 DNA로 위기 상황에 극도로 강합니다."
+                "description": "World-class individuals and deep European experience, at their best under pressure."
             },
             "barcelona": {
                 "name": "Barcelona",
@@ -107,7 +106,7 @@ LEAGUE_DATA = {
                 "elo": 1900,
                 "form": ["W", "L", "W", "W", "W"],
                 "key_player": "라민 야말 (Lamine Yamal)",
-                "description": "강력한 하이 프레스와 유기적인 패스 앤 무브로 가공할 득점력을 보여줍니다."
+                "description": "An aggressive high press and fluid passing movement generate high-volume chances."
             },
             "atletico": {
                 "name": "Atletico Madrid",
@@ -117,7 +116,7 @@ LEAGUE_DATA = {
                 "elo": 1820,
                 "form": ["W", "D", "W", "L", "W"],
                 "key_player": "앙투안 그리즈만 (Antoine Griezmann)",
-                "description": "시메오네 감독 아래 다져진 견고한 두 줄 수비와 그리즈만의 천재성이 돋보입니다."
+                "description": "A solid two-bank defensive shape under Simeone, with Griezmann providing the spark."
             },
             "girona": {
                 "name": "Girona",
@@ -127,7 +126,7 @@ LEAGUE_DATA = {
                 "elo": 1720,
                 "form": ["L", "W", "D", "W", "L"],
                 "key_player": "빅토르 치한코우 (Viktor Tsygankov)",
-                "description": "유기적인 윙백의 오버랩과 유기적인 하프스페이스 공략이 장점입니다."
+                "description": "Overlapping wing-backs and consistent attacks through the half-spaces."
             },
             "bilbao": {
                 "name": "Athletic Bilbao",
@@ -137,7 +136,7 @@ LEAGUE_DATA = {
                 "elo": 1750,
                 "form": ["W", "D", "W", "D", "W"],
                 "key_player": "니코 윌리엄스 (Nico Williams)",
-                "description": "윌리엄스 형제를 필두로 한 측면 에너지가 매우 뛰어난 팀입니다."
+                "description": "Relentless energy out wide, led by the Williams brothers."
             }
         }
     },
@@ -154,7 +153,7 @@ LEAGUE_DATA = {
                 "elo": 1890,
                 "form": ["W", "W", "W", "D", "W"],
                 "key_player": "라우타로 마르티네스 (Lautaro Martinez)",
-                "description": "3-5-2 포메이션의 마스터클래스이며 공수 밸런스가 이탈리아 내 최강입니다."
+                "description": "A masterclass in the 3-5-2, with the best attack-defence balance in Serie A."
             },
             "milan": {
                 "name": "AC Milan",
@@ -164,7 +163,7 @@ LEAGUE_DATA = {
                 "elo": 1790,
                 "form": ["W", "L", "W", "W", "D"],
                 "key_player": "하파엘 레앙 (Rafael Leao)",
-                "description": "레앙의 폭발적인 왼쪽 측면 돌파력을 기반으로 한 다이내믹 공격이 특징입니다."
+                "description": "Dynamic attacking play built on Leao's directness down the left."
             },
             "juventus": {
                 "name": "Juventus",
@@ -174,7 +173,7 @@ LEAGUE_DATA = {
                 "elo": 1810,
                 "form": ["D", "W", "D", "W", "D"],
                 "key_player": "두산 블라호비치 (Dusan Vlahovic)",
-                "description": "견고함을 넘어 철벽에 가까운 실점 제어 능력을 보여주는 짠물 축구입니다."
+                "description": "Miserly at the back, with exceptional control of the chances they concede."
             },
             "napoli": {
                 "name": "Napoli",
@@ -184,7 +183,7 @@ LEAGUE_DATA = {
                 "elo": 1800,
                 "form": ["W", "W", "L", "W", "W"],
                 "key_player": "흐비차 크바라츠헬리아 (Khvicha Kvaratskhelia)",
-                "description": "조직적인 블록 수비와 역습 시 빠른 크바라츠헬리아의 결정력을 중시합니다."
+                "description": "A well-organised defensive block, springing forward through Kvaratskhelia."
             },
             "atalanta": {
                 "name": "Atalanta",
@@ -194,7 +193,7 @@ LEAGUE_DATA = {
                 "elo": 1830,
                 "form": ["W", "W", "W", "W", "W"],
                 "key_player": "아데몰라 루크먼 (Ademola Lookman)",
-                "description": "전방 맨투맨 압박과 폭발적인 전원 공격 성향을 구사해 대량 득점이 잦습니다."
+                "description": "Man-oriented pressing and all-out attacking commitment produce high-scoring games."
             }
         }
     },
@@ -211,7 +210,7 @@ LEAGUE_DATA = {
                 "elo": 1920,
                 "form": ["W", "W", "W", "D", "W"],
                 "key_player": "해리 케인 (Harry Kane)",
-                "description": "높은 볼 점유율과 전방 압박, 해리 케인의 완성형 스트라이커 움직임이 결합되었습니다."
+                "description": "High possession and front-foot pressing, finished by Kane's complete centre-forward play."
             },
             "leverkusen": {
                 "name": "Bayer Leverkusen",
@@ -221,7 +220,7 @@ LEAGUE_DATA = {
                 "elo": 1850,
                 "form": ["D", "W", "D", "W", "D"],
                 "key_player": "플로리안 비르츠 (Florian Wirtz)",
-                "description": "사비 알론소 감독 하에 완성도 높은 후방 빌드업과 비르츠 조율 하에 정교한 패스 축구를 펼칩니다."
+                "description": "Polished build-up under Alonso, with Wirtz orchestrating in the final third."
             },
             "dortmund": {
                 "name": "Borussia Dortmund",
@@ -231,7 +230,7 @@ LEAGUE_DATA = {
                 "elo": 1780,
                 "form": ["L", "W", "L", "W", "W"],
                 "key_player": "율리안 브란트 (Julian Brandt)",
-                "description": "홈 시그널 이두나 파크의 노란 장벽 응원에 힙입어 홈 극강의 위력을 발휘합니다."
+                "description": "Formidable at home, driven by the Yellow Wall at Signal Iduna Park."
             },
             "leipzig": {
                 "name": "RB Leipzig",
@@ -241,7 +240,7 @@ LEAGUE_DATA = {
                 "elo": 1800,
                 "form": ["W", "D", "W", "L", "D"],
                 "key_player": "로이스 오펜다 (Lois Openda)",
-                "description": "레드불 특유의 강렬한 압박 템포와 오펜다의 폭발적인 배후 침투 역습이 위력적입니다."
+                "description": "The Red Bull pressing template, with Openda attacking space in behind."
             }
         }
     }

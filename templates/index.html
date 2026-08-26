@@ -1,10 +1,9 @@
-<!-- C:\Users\ericy\.gemini\antigravity\scratch\football-prediction-web\templates\index.html -->
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANTIGRAVITY 축구 경기 예측 플랫폼</title>
+    <title>Football Match Prediction &amp; Simulation</title>
     <!-- Google Fonts: Outfit & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,70 +17,70 @@
         <div class="header-container">
             <a href="#" class="brand-logo">
                 <span class="ball-icon">⚽</span>
-                <span class="logo-text">ANTIGRAVITY <span class="logo-highlight">FCP</span></span>
+                <span class="logo-text">POISSON <span class="logo-highlight">FC</span></span>
             </a>
             <nav class="nav-links">
-                <a href="#fixtures-section" class="nav-link active">예측 매치업</a>
-                <a href="#simulator-section" class="nav-link">커스텀 시뮬레이터</a>
-                <a href="#standings-section" class="nav-link">리그별 전력 분석</a>
-                <a href="#theory-section" class="nav-link">예측 원리</a>
+                <a href="#fixtures-section" class="nav-link active">Fixtures</a>
+                <a href="#simulator-section" class="nav-link">Simulator</a>
+                <a href="#standings-section" class="nav-link">Team ratings</a>
+                <a href="#theory-section" class="nav-link">Methodology</a>
             </nav>
         </div>
     </header>
 
     <main class="container">
-        <!-- 메인 히어로 섹션 -->
+        <!-- hero -->
         <section class="hero-section">
-            <h1 class="hero-title">인공지능 & 통계 기반<br><span class="gradient-text">축구 경기 예측 플랫폼</span></h1>
-            <p class="hero-subtitle">포아송 분포 모델과 10,000회 몬테카를로 시뮬레이션 기법을 탑재한 프리미엄 전력 분석 대시보드입니다. 모든 기능은 무제한 무료로 제공됩니다.</p>
+            <h1 class="hero-title">Statistical<br><span class="gradient-text">Football Match Prediction</span></h1>
+            <p class="hero-subtitle">Match outcome probabilities from a Poisson distribution model, with a 10,000-trial Monte Carlo simulator for custom scenarios.</p>
         </section>
 
-        <!-- 예정된 경기 예측 매치업 섹션 -->
+        <!-- fixtures -->
         <section id="fixtures-section" class="dashboard-section">
             <div class="section-header">
-                <h2 class="section-title">🏆 오늘의 추천 예측 매치</h2>
-                <p class="section-desc">유럽 빅리그 빅매치의 전력을 통계 모델로 정밀 분석한 예측 결과입니다.</p>
+                <h2 class="section-title">🏆 Today&rsquo;s fixtures</h2>
+                <p class="section-desc">Live and upcoming matches from Europe&rsquo;s top four leagues, with model-based outcome probabilities.</p>
             </div>
             
             <div id="fixtures-grid" class="fixtures-grid">
-                <!-- JS에서 동적으로 예정된 매치를 생성합니다. -->
+                <!-- rendered by app.js -->
                 <div class="loading-spinner-wrapper">
                     <div class="spinner"></div>
-                    <p>리그 매치 데이터를 불러오는 중...</p>
+                    <p>Loading fixtures...</p>
                 </div>
             </div>
         </section>
 
-        <!-- 인터랙티브 커스텀 시뮬레이터 섹션 -->
+        <!-- simulator -->
         <section id="simulator-section" class="dashboard-section bg-card-glow">
             <div class="section-header">
-                <h2 class="section-title">⚙️ 실시간 경기 시뮬레이터</h2>
-                <p class="section-desc">가상의 팀 또는 원하는 팀들의 전력을 세부 조절하여 10,000회의 가상 경기를 즉석에서 구동해보세요.</p>
+                <h2 class="section-title">⚙️ Custom match simulator</h2>
+                <p class="section-desc">Adjust each side&rsquo;s attack, defence and form, then run 10,000 simulated matches.</p>
             </div>
 
             <div class="simulator-workspace">
                 <div class="sim-team-panel home-panel">
                     <div class="panel-header">
                         <span class="badge badge-home">HOME TEAM</span>
-                        <input type="text" id="sim-home-name" class="team-name-input" value="FC 아스날">
+                        <input type="text" id="sim-home-name" class="team-name-input" value="Arsenal">
                     </div>
                     <div class="slider-group">
                         <div class="slider-label-row">
-                            <span>공격력 (Attack Coefficient)</span>
+                            <span>Attack coefficient</span>
                             <span id="home-att-val" class="slider-indicator neon-green">65</span>
                         </div>
                         <input type="range" id="sim-home-attack" class="custom-slider" min="10" max="100" value="65">
                     </div>
                     <div class="slider-group">
                         <div class="slider-label-row">
-                            <span>수비 견고성 (Defense Rating)</span>
+                            <span>Defensive rating</span>
                             <span id="home-def-val" class="slider-indicator neon-green">75</span>
                         </div>
                         <input type="range" id="sim-home-defense" class="custom-slider" min="10" max="100" value="75">
                     </div>
                     <div class="slider-group">
                         <div class="slider-label-row">
-                            <span>최근 기세 & 폼 (Recent Form)</span>
+                            <span>Recent form</span>
                             <span id="home-form-val" class="slider-indicator neon-green">70</span>
                         </div>
                         <input type="range" id="sim-home-form" class="custom-slider" min="10" max="100" value="70">
@@ -90,7 +89,7 @@
                         <label class="custom-checkbox-container">
                             <input type="checkbox" id="sim-home-adv" checked>
                             <span class="checkmark"></span>
-                            홈 경기장 어드밴티지 적용 (+15% 기대 득점 보정)
+                            Apply home advantage (+15% expected goals)
                         </label>
                     </div>
                 </div>
@@ -98,7 +97,7 @@
                 <div class="sim-vs-divider">
                     <div class="vs-glow-text">VS</div>
                     <button id="btn-run-simulation" class="btn-simulate">
-                        <span class="btn-text">시뮬레이션 가동</span>
+                        <span class="btn-text">Run simulation</span>
                         <div class="btn-glow"></div>
                     </button>
                 </div>
@@ -106,143 +105,143 @@
                 <div class="sim-team-panel away-panel">
                     <div class="panel-header">
                         <span class="badge badge-away">AWAY TEAM</span>
-                        <input type="text" id="sim-away-name" class="team-name-input" value="FC 바이에른">
+                        <input type="text" id="sim-away-name" class="team-name-input" value="Bayern Munich">
                     </div>
                     <div class="slider-group">
                         <div class="slider-label-row">
-                            <span>공격력 (Attack Coefficient)</span>
+                            <span>Attack coefficient</span>
                             <span id="away-att-val" class="slider-indicator neon-cyan">70</span>
                         </div>
                         <input type="range" id="sim-away-attack" class="custom-slider" min="10" max="100" value="70">
                     </div>
                     <div class="slider-group">
                         <div class="slider-label-row">
-                            <span>수비 견고성 (Defense Rating)</span>
+                            <span>Defensive rating</span>
                             <span id="away-def-val" class="slider-indicator neon-cyan">60</span>
                         </div>
                         <input type="range" id="sim-away-defense" class="custom-slider" min="10" max="100" value="60">
                     </div>
                     <div class="slider-group">
                         <div class="slider-label-row">
-                            <span>최근 기세 & 폼 (Recent Form)</span>
+                            <span>Recent form</span>
                             <span id="away-form-val" class="slider-indicator neon-cyan">65</span>
                         </div>
                         <input type="range" id="sim-away-form" class="custom-slider" min="10" max="100" value="65">
                     </div>
                     <div class="checkbox-info">
-                        <p class="neutral-text">💡 원정 디버프가 자동으로 계산에 산입됩니다.</p>
+                        <p class="neutral-text">💡 An away-side adjustment is applied automatically.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- 시뮬레이션 결과 보드 (실행 전 비활성화) -->
+            <!-- simulation results -->
             <div id="sim-result-box" class="sim-result-box hidden">
                 <div class="sim-running-overlay">
                     <div class="dice-rolling-animation">
                         <div class="dice">🎲</div>
-                        <p class="pulse-text">10,000회 경기 몬테카를로 분석 중...</p>
+                        <p class="pulse-text">Running 10,000 simulations...</p>
                     </div>
                 </div>
                 
                 <div class="sim-results-grid">
                     <div class="sim-prob-card">
-                        <h3>📊 시뮬레이션 승무패 확률</h3>
+                        <h3>📊 Simulated outcome probabilities</h3>
                         <div class="prob-bar-container">
-                            <div id="sim-bar-home" class="prob-bar home-color" style="width: 40%">홈 승 <span id="sim-val-home">40%</span></div>
-                            <div id="sim-bar-draw" class="prob-bar draw-color" style="width: 25%">무승부 <span id="sim-val-draw">25%</span></div>
-                            <div id="sim-bar-away" class="prob-bar away-color" style="width: 35%">원정 승 <span id="sim-val-away">35%</span></div>
+                            <div id="sim-bar-home" class="prob-bar home-color" style="width: 40%">Home <span id="sim-val-home">40%</span></div>
+                            <div id="sim-bar-draw" class="prob-bar draw-color" style="width: 25%">Draw <span id="sim-val-draw">25%</span></div>
+                            <div id="sim-bar-away" class="prob-bar away-color" style="width: 35%">Away <span id="sim-val-away">35%</span></div>
                         </div>
                         <div class="xg-row">
-                            <div>예상 기대득점(xG)</div>
+                            <div>Expected goals (xG)</div>
                             <div class="xg-badge-container">
-                                <span class="badge badge-home"><span id="sim-xg-home">1.85</span>골</span>
+                                <span class="badge badge-home"><span id="sim-xg-home">1.85</span> goals</span>
                                 <span class="vs-text">VS</span>
-                                <span class="badge badge-away"><span id="sim-xg-away">1.62</span>골</span>
+                                <span class="badge badge-away"><span id="sim-xg-away">1.62</span> goals</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="sim-score-card">
-                        <h3>🎯 시뮬레이션 최다 스코어 Top 3</h3>
+                        <h3>🎯 Most likely scorelines</h3>
                         <ul id="sim-scores-list" class="top-scores-list">
-                            <!-- JS 삽입 -->
+                            <!-- rendered by app.js -->
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 리그별 구단 파워 랭킹 & 세부 분석 분석 섹션 -->
+        <!-- team ratings -->
         <section id="standings-section" class="dashboard-section">
             <div class="section-header">
-                <h2 class="section-title">📊 리그별 구단 통계 & 파워 랭킹</h2>
-                <p class="section-desc">각 리그별로 구축된 구단별 상세 공격력/수비력 계수 및 Elo 등급표를 조회합니다.</p>
+                <h2 class="section-title">📊 Team ratings by league</h2>
+                <p class="section-desc">Attack and defence coefficients and Elo ratings for each club in the model.</p>
             </div>
 
             <div class="league-tabs">
-                <button class="league-tab-btn active" data-league="epl">🏴󠁧󠁢󠁥󠁮󠁧󠁿 프리미어리그</button>
-                <button class="league-tab-btn" data-league="laliga">🇪🇸 라리가</button>
-                <button class="league-tab-btn" data-league="seriea">🇮🇹 세리에 A</button>
-                <button class="league-tab-btn" data-league="bundesliga">🇩🇪 분데스리가</button>
+                <button class="league-tab-btn active" data-league="epl">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</button>
+                <button class="league-tab-btn" data-league="laliga">🇪🇸 La Liga</button>
+                <button class="league-tab-btn" data-league="seriea">🇮🇹 Serie A</button>
+                <button class="league-tab-btn" data-league="bundesliga">🇩🇪 Bundesliga</button>
             </div>
 
             <div class="standings-container glass-card">
                 <table class="standings-table">
                     <thead>
                         <tr>
-                            <th style="width: 30%">팀명 (구단)</th>
-                            <th style="width: 15%">Elo 등급</th>
-                            <th style="width: 15%">공격 지수 (xG 기준)</th>
-                            <th style="width: 15%">수비 견고성 (실점 기준)</th>
-                            <th style="width: 25%">최근 5경기 폼</th>
+                            <th style="width: 30%">Club</th>
+                            <th style="width: 15%">Elo rating</th>
+                            <th style="width: 15%">Attack (xG)</th>
+                            <th style="width: 15%">Defence (xGA)</th>
+                            <th style="width: 25%">Last 5</th>
                         </tr>
                     </thead>
                     <tbody id="standings-body">
-                        <!-- JS 삽입 -->
+                        <!-- rendered by app.js -->
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <!-- 예측 원리 / 수학적 이론 설명 섹션 -->
+        <!-- methodology -->
         <section id="theory-section" class="dashboard-section">
             <div class="section-header">
-                <h2 class="section-title">📖 축구 통계학 예측 원리</h2>
-                <p class="section-desc">본 예측 모델이 사용하는 현대 스포츠 통계학의 핵심 알고리즘 설명입니다.</p>
+                <h2 class="section-title">📖 How the model works</h2>
+                <p class="section-desc">The statistical methods behind the predictions.</p>
             </div>
 
             <div class="theory-cards-grid">
                 <div class="theory-card glass-card">
                     <div class="card-icon">📈</div>
-                    <h3>포아송 분포 (Poisson Distribution)</h3>
-                    <p>축구 경기는 정해진 시간(90분) 동안 극히 드문 사건(골)이 무작위로 발생하는 무작위 과정입니다. 포아송 공식은 두 팀의 공격 및 수비 상수를 대입하여 0:0부터 5:5까지 각 점수가 발생할 수학적 확률을 정밀하게 연산합니다.</p>
+                    <h3>Poisson distribution</h3>
+                    <p>Goals are rare, roughly independent events occurring over a fixed 90 minutes, which makes the Poisson distribution a natural fit. Each side&rsquo;s attack and defence coefficients give an expected goal rate, and the model computes the probability of every scoreline from 0-0 to 5-5.</p>
                 </div>
                 <div class="theory-card glass-card">
                     <div class="card-icon">⚡</div>
-                    <h3>최신 Elo 평점 시스템</h3>
-                    <p>체스에서 시작되어 현재 축구, E스포츠 등에 널리 쓰이는 구단 파워 레이팅 시스템입니다. 상대 구단의 가치와 강세를 기반으로 상호 가중치가 조절되어 고정된 스탯보다 훨씬 더 살아 숨 쉬는 전력 판별 기준이 되어 줍니다.</p>
+                    <h3>Elo rating system</h3>
+                    <p>Originally developed for chess and now widely used in football, Elo rates a club relative to its opponents rather than in isolation. The rating gap between two sides adjusts the expected goal rates, capped at &plusmn;40%.</p>
                 </div>
                 <div class="theory-card glass-card">
                     <div class="card-icon">🎲</div>
-                    <h3>몬테카를로 시뮬레이션</h3>
-                    <p>단 한 번의 확률 계산을 넘어 컴퓨터가 난수를 발생시켜 가상으로 10,000번 경기를 실행합니다. 수천 수만 번 무작위 시뮬레이션을 돌려 승/무/패 및 스코어의 누적 빈도수를 계산함으로써 현실에 존재하는 우연성 요소를 포함시킵니다.</p>
+                    <h3>Monte Carlo simulation</h3>
+                    <p>Rather than solving the distribution analytically, the simulator draws random goal counts 10,000 times using a Knuth Poisson sampler. Counting the outcomes gives empirical win, draw and loss frequencies that reflect real match variance.</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- 매치 정밀 분석 레이어 모달 -->
+    <!-- match detail modal -->
     <div id="predict-modal" class="modal-overlay hidden">
         <div class="modal-container glass-card animate-zoom-in">
             <button id="modal-close-btn" class="modal-close-x">&times;</button>
             
             <div class="modal-header">
                 <span id="modal-league-badge" class="badge">EPL</span>
-                <h2 class="modal-title">정밀 매치 분석 보고서</h2>
+                <h2 class="modal-title">Match analysis report</h2>
             </div>
 
             <div class="modal-content">
-                <!-- 두 팀 스탯 카드 대결 -->
+                <!-- matchup header -->
                 <div class="modal-matchup-header">
                     <div class="modal-team-card text-right">
                         <div id="modal-home-name" class="modal-team-name font-outfit">HOME TEAM</div>
@@ -255,31 +254,31 @@
                     </div>
                 </div>
 
-                <!-- 승무패 분석 확률 게이지 차트 -->
+                <!-- outcome gauge -->
                 <div class="modal-analysis-section">
-                    <h3 class="subsection-title">📊 기대 승/무/패 예측 확률</h3>
+                    <h3 class="subsection-title">📊 Outcome probabilities</h3>
                     <div class="gauge-display-container">
-                        <!-- CSS 그라데이션 및 비주얼 게이지 -->
+                        <!-- gauge -->
                         <div class="prob-visual-strip">
-                            <div id="modal-gauge-home" class="strip-seg home-seg">홈 승 <span id="modal-lbl-home">45%</span></div>
-                            <div id="modal-gauge-draw" class="strip-seg draw-seg">무승부 <span id="modal-lbl-draw">20%</span></div>
-                            <div id="modal-gauge-away" class="strip-seg away-seg">원정 승 <span id="modal-lbl-away">35%</span></div>
+                            <div id="modal-gauge-home" class="strip-seg home-seg">Home <span id="modal-lbl-home">45%</span></div>
+                            <div id="modal-gauge-draw" class="strip-seg draw-seg">Draw <span id="modal-lbl-draw">20%</span></div>
+                            <div id="modal-gauge-away" class="strip-seg away-seg">Away <span id="modal-lbl-away">35%</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 부가 지표 (오버언더 / BTTS / xG) -->
+                <!-- secondary metrics -->
                 <div class="modal-stats-grid">
                     <div class="stat-card">
-                        <h4>골 수 기준 (Over/Under 2.5)</h4>
+                        <h4>Total goals (over/under 2.5)</h4>
                         <div class="ou-container">
                             <div class="ou-bar-row">
-                                <span class="ou-lbl">2.5골 이상 (Over)</span>
+                                <span class="ou-lbl">Over 2.5</span>
                                 <div class="ou-progress-bar"><div id="modal-bar-over" class="ou-fill neon-cyan" style="width: 55%"></div></div>
                                 <span id="modal-val-over" class="ou-val font-outfit">55%</span>
                             </div>
                             <div class="ou-bar-row">
-                                <span class="ou-lbl">2.5골 이하 (Under)</span>
+                                <span class="ou-lbl">Under 2.5</span>
                                 <div class="ou-progress-bar"><div id="modal-bar-under" class="ou-fill neon-purple" style="width: 45%"></div></div>
                                 <span id="modal-val-under" class="ou-val font-outfit">45%</span>
                             </div>
@@ -287,7 +286,7 @@
                     </div>
 
                     <div class="stat-card">
-                        <h4>양 팀 득점 여부 (BTTS)</h4>
+                        <h4>Both teams to score</h4>
                         <div class="btts-circle-display">
                             <div class="circle-radial">
                                 <svg viewBox="0 0 36 36" class="circular-chart neon-green-chart">
@@ -296,41 +295,41 @@
                                 </svg>
                                 <div class="btts-percentage font-outfit"><span id="modal-val-btts">60%</span></div>
                             </div>
-                            <div class="btts-label">Yes (양 팀 모두 골을 넣을 확률)</div>
+                            <div class="btts-label">Probability both teams score</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 가장 확률 높은 스코어 보드 및 AI 분석 코멘터리 -->
+                <!-- scorelines and commentary -->
                 <div class="modal-insights-row">
                     <div class="score-predictions-box">
-                        <h4 class="box-title">🎯 통계적 예상 스코어 Top 3</h4>
+                        <h4 class="box-title">🎯 Most likely scorelines</h4>
                         <ul id="modal-scores-list" class="top-scores-list list-vertical">
-                            <!-- JS 렌더링 -->
+                            <!-- rendered by app.js -->
                         </ul>
                     </div>
 
                     <div class="commentary-box">
-                        <h4 class="box-title">🧠 전술 시뮬레이션 매치 리포트</h4>
+                        <h4 class="box-title">🧠 Match report</h4>
                         <div id="modal-insight-text" class="insight-text">
-                            두 팀의 세부 스탯 로딩 중...
+                            Loading match analysis...
                         </div>
                     </div>
                 </div>
             </div>
             
             <div class="modal-footer">
-                <button id="modal-close-footer-btn" class="btn-close">닫기</button>
+                <button id="modal-close-footer-btn" class="btn-close">Close</button>
             </div>
         </div>
     </div>
 
     <footer class="app-footer-bar">
-        <p>&copy; 2026 ANTIGRAVITY Football Prediction Service. Powered by statistical Poisson Engine & Monte Carlo Simulator.</p>
-        <p class="footer-small">이 서비스는 로컬에서 자체적으로 동작하는 오픈소스 통계 예측 플랫폼으로, 모든 시뮬레이션과 분석 데이터는 무료입니다.</p>
+        <p>&copy; 2026 Football Match Prediction &amp; Simulation. Powered by statistical Poisson Engine & Monte Carlo Simulator.</p>
+        <p class="footer-small">Fixture data from ESPN&rsquo;s public API. Club ratings are a manually curated snapshot for the 2025&ndash;26 season.</p>
     </footer>
 
-    <!-- JS 앱 로직 연동 -->
+    <!-- app logic -->
     <script src="/static/js/app.js"></script>
 </body>
 </html>

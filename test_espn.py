@@ -1,4 +1,3 @@
-# C:\Users\ericy\.gemini\antigravity\scratch\football-prediction-web\test_espn.py
 
 import urllib.request
 import json

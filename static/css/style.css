@@ -1568,3 +1568,13 @@ a {
     border: 1px solid var(--border-glass) !important;
     font-weight: 600 !important;
 }
+
+/* Show the full club description instead of truncating it */
+.team-desc-small {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    line-height: 1.35;
+    max-width: 360px;
+    display: block;
+}

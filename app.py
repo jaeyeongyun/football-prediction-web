@@ -1,9 +1,8 @@
-# C:\Users\ericy\.gemini\antigravity\scratch\football-prediction-web\app.py
 
 import os
 from flask import Flask, jsonify, render_template, request
 from database import LEAGUE_DATA
-from prediction_engine import generate_prediction, run_monte_carlo
+from prediction_engine import generate_prediction, run_monte_carlo, english_player
 from live_updater import get_realtime_fixtures
 
 app = Flask(
@@ -89,31 +88,48 @@ def predict_match():
     prediction["home_details"] = {
         "elo": home_team["elo"],
         "form": home_team["form"],
-        "key_player": home_team["key_player"],
+        "key_player": english_player(home_team["key_player"]),
         "description": home_team["description"]
     }
     prediction["away_details"] = {
         "elo": away_team["elo"],
         "form": away_team["form"],
-        "key_player": away_team["key_player"],
+        "key_player": english_player(away_team["key_player"]),
         "description": away_team["description"]
     }
     
     return jsonify(prediction)
 
 # API: 커스텀 전력 세부 조절 기반 몬테카를로 시뮬레이션
+def _clamp_stats(stats):
+    """슬라이더 범위(0~100)를 벗어난 값으로 시뮬레이션이 폭주하지 않도록 제한한다."""
+    def num(key, default):
+        try:
+            value = float(stats.get(key, default))
+        except (TypeError, ValueError):
+            value = default
+        return min(max(value, 0.0), 100.0)
+
+    return {
+        "attack": num("attack", 50),
+        "defense": num("defense", 50),
+        "form": num("form", 50),
+        "home_advantage": bool(stats.get("home_advantage", True)),
+    }
+
+
 @app.route("/api/simulate", methods=["POST"])
 def simulate_match():
     data = request.get_json()
     if not data or "home" not in data or "away" not in data:
         return jsonify({"error": "home과 away의 능력치 데이터가 필요합니다."}), 400
         
-    home_stats = data["home"]
-    away_stats = data["away"]
+    home_stats = _clamp_stats(data["home"])
+    away_stats = _clamp_stats(data["away"])
     
     # 몬테카를로 엔진 구동
     sim_result = run_monte_carlo(home_stats, away_stats)
     return jsonify(sim_result)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="127.0.0.1", port=5000, debug=False)

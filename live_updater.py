@@ -1,4 +1,3 @@
-# C:\Users\ericy\.gemini\antigravity\scratch\football-prediction-web\live_updater.py
 
 import urllib.request
 import json
@@ -68,10 +67,9 @@ def fetch_espn_scoreboard(league_id):
     """ESPN API로부터 특정 리그의 스코어보드 데이터 요청 (urllib 사용)"""
     url = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{league_id}/scoreboard"
     try:
-        req = urllib.request.Request(
-            url, 
-            headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
-        )
+        # ESPN rejects browser-like and unknown User-Agent strings with 403.
+        # urllib's default (Python-urllib/x.y) is accepted, so no header is set.
+        req = urllib.request.Request(url)
         with urllib.request.urlopen(req, timeout=5) as response:
             return json.loads(response.read().decode())
     except Exception as e:
@@ -113,8 +111,8 @@ def get_realtime_fixtures():
             
             # UTC 시간 -> 단순 날짜/시간 파싱
             utc_date = event.get("date", "") # 2026-05-24T15:00Z
-            date_str = "오늘"
-            time_str = "경기"
+            date_str = "Today"
+            time_str = "TBC"
             if len(utc_date) >= 16:
                 date_str = utc_date[:10]
                 time_str = utc_date[11:16]
@@ -173,11 +171,11 @@ def get_realtime_fixtures():
             # 경기 상태 텍스트 커스텀 변환 (한국어)
             status_kr = detail_time
             if state == "pre":
-                status_kr = f"{time_str} 예정"
+                status_kr = f"Kick-off {time_str}"
             elif state == "in":
-                status_kr = f"🔴 {detail_time} (라이브)"
+                status_kr = f"LIVE — {detail_time}"
             elif state == "post":
-                status_kr = "경기 종료 (FT)"
+                status_kr = "Full time"
                 
             all_fixtures.append({
                 "id": event.get("id", f"espn_{idx}"),

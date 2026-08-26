@@ -1,4 +1,3 @@
-# C:\Users\ericy\.gemini\antigravity\scratch\football-prediction-web\prediction_engine.py
 
 import math
 import random
@@ -136,8 +135,8 @@ def generate_prediction(home_team, away_team, league_key=None, custom=False):
     insight = generate_insight(home_team, away_team, home_xg, away_xg, h_win_pct, a_win_pct, draw_pct)
     
     return {
-        "home_team": home_team.get("name_kr", home_team.get("name")),
-        "away_team": away_team.get("name_kr", away_team.get("name")),
+        "home_team": home_team.get("name", home_team.get("name_kr")),
+        "away_team": away_team.get("name", away_team.get("name_kr")),
         "home_xg": home_xg,
         "away_xg": away_xg,
         "home_win_p": h_win_pct,
@@ -229,34 +228,46 @@ def sample_poisson(lmbda):
         p *= random.random()
     return k - 1
 
+def english_player(name):
+    """Ratings store players as "한국어 (English)"; return the English part."""
+    if name and "(" in name and name.rstrip().endswith(")"):
+        return name[name.rfind("(") + 1:name.rfind(")")].strip()
+    return name
+
+
 def generate_insight(home, away, h_xg, a_xg, h_p, a_p, d_p):
-    """예측 통계 지표를 문장 형태의 종합 코멘터리로 반환 (Korean)"""
-    h_name = home.get("name_kr", home.get("name"))
-    a_name = away.get("name_kr", away.get("name"))
-    
-    # 1. 경기 주도 주체 판별
+    """Return a short written summary of the model output."""
+    h_name = home.get("name", home.get("name_kr"))
+    a_name = away.get("name", away.get("name_kr"))
+
     if h_p > a_p + 15:
-        verdict = f"홈 구장의 강력한 이점과 전력의 우위를 앞세운 **{h_name}**의 우세가 강하게 점쳐지는 매치입니다."
+        verdict = (f"Home advantage and a clear edge in the underlying ratings make "
+                   f"**{h_name}** the model's favourite in this fixture.")
     elif a_p > h_p + 15:
-        verdict = f"비록 원정이지만 객관적 전력에서 명백한 우위를 점한 **{a_name}**가 경기를 지배할 것으로 예상됩니다."
+        verdict = (f"Despite travelling, **{a_name}** hold a clear advantage in the "
+                   f"underlying ratings and are favoured to control this match.")
     elif abs(h_p - a_p) < 10:
-        verdict = f"두 팀의 전력 차가 매우 팽팽합니다. 홈 그라운드의 이점을 누릴 {h_name}와 전술적 대응력을 가진 {a_name}가 치열한 공방을 펼칠 **무승부 가능성이 높은 접전**이 예상됩니다."
+        verdict = (f"The two sides are closely matched. {h_name} have home advantage and "
+                   f"{a_name} have the means to respond, so a **draw is a live outcome**.")
     else:
         dominant = h_name if h_p > a_p else a_name
-        verdict = f"**{dominant}**가 전반적인 전력 우세 및 미세한 스탯 우위를 바탕으로 경기 주도권을 잡고 우세를 점할 확률이 높습니다."
-        
-    # 2. 다득점 여부 판별
-    total_xg = h_xg + a_xg
+        verdict = (f"**{dominant}** hold a modest edge across the ratings and are "
+                   f"slightly more likely to dictate the match.")
+
+    total_xg = round(h_xg + a_xg, 2)
     if total_xg >= 2.8:
-        goal_comment = f"양 팀의 기대 득점 합계가 **{total_xg}골**로 매우 높게 평가되어, 팬들의 눈을 즐겁게 할 **화끈한 타격전과 다득점 경기** 양상으로 전개될 것입니다."
+        goal_comment = (f"Combined expected goals of **{total_xg}** point to an open game "
+                        f"with chances at both ends.")
     elif total_xg <= 1.8:
-        goal_comment = f"양 팀의 탄탄한 수비력과 다소 신중한 전술 운영이 예상되어, 기대 득점 합계 **{total_xg}골** 수준의 **타이트한 수비 지향형 저득점 매치**가 될 가능성이 큽니다."
+        goal_comment = (f"Combined expected goals of just **{total_xg}** suggest a tight, "
+                        f"low-scoring match shaped by both defences.")
     else:
-        goal_comment = f"공수 전술 밸런스가 안정적인 상태로, 일반적인 리그 평균 득점권 수준인 **{total_xg}골 전후**의 경기 결과가 예상됩니다."
-        
-    # 3. 팀별 상세 특징 추가
-    h_player = home.get("key_player", "")
-    a_player = away.get("key_player", "")
-    player_comment = f"이번 매치의 핵심 균열을 만들 선수는 홈 팀의 핵심 **{h_player.split(' (')[0]}**와 원정 팀의 크랙 **{a_player.split(' (')[0]}**의 에이스 맞대결입니다."
-    
-    return f"{verdict}<br><br>{goal_comment}<br><br>{player_comment} 양 팀 전술 요인과 전력 모델링이 가리키는 최종 예상 분포를 아래 상세 지표에서 확인해보세요."
+        goal_comment = (f"Combined expected goals of around **{total_xg}** sit close to the "
+                        f"league average for a fixture of this profile.")
+
+    h_player = english_player(home.get("key_player", ""))
+    a_player = english_player(away.get("key_player", ""))
+    player_comment = (f"The likeliest sources of a breakthrough are **{h_player}** for the "
+                      f"home side and **{a_player}** for the visitors.")
+
+    return f"{verdict}<br><br>{goal_comment}<br><br>{player_comment}"
