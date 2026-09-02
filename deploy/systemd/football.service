@@ -1,0 +1,14 @@
+[Unit]
+Description=Football Match Prediction Flask app
+After=network.target
+
+[Service]
+User=football
+Group=football
+WorkingDirectory=/opt/football
+ExecStart=/opt/football/venv/bin/gunicorn --workers 2 --bind 127.0.0.1:8000 app:app
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
