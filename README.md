@@ -1,3 +1,4 @@
+[![CI](https://github.com/jaeyeongyun/football-prediction-web/actions/workflows/ci.yml/badge.svg)](https://github.com/jaeyeongyun/football-prediction-web/actions/workflows/ci.yml)
 # Football Match Prediction & Simulation
 
 A Python web platform that predicts football match outcomes using a Poisson distribution model and Monte Carlo simulation.
