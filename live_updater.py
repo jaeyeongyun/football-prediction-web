@@ -180,7 +180,7 @@ def get_realtime_fixtures():
             all_fixtures.append({
                 "id": event.get("id", f"espn_{idx}"),
                 "league_key": league_key,
-                "league_name": LEAGUE_DATA[league_key]["name_kr"],
+                "league_name": LEAGUE_DATA[league_key]["name"],
                 "league_color": LEAGUE_DATA[league_key]["color"],
                 "date": date_str,
                 "time": time_str,
